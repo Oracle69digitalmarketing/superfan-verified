@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "Superfan Verified",
+    "slug": "superfan-verified",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "platforms": ["ios", "android", "web"],
+    "sdkVersion": "51.0.0",
+    "entryPoint": "./App.js"
+  }
+}
