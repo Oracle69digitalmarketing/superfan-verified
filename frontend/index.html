@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Superfan Verified</title>
+  <style>
+    body{font-family:system-ui;background:#0f0f2f;color:#fff;padding:20px;}
+    .card{background:#1f1f4f;border-radius:12px;padding:15px;margin:10px 0;}
+    button{padding:10px 15px;border:none;border-radius:8px;cursor:pointer;background:#6c63ff;color:#fff;}
+  </style>
+</head>
+<body>
+  <h1>Superfan Verified</h1>
+  <div>
+    <label>Fan ID / Address: <input id="user" value="alice"/></label>
+    <button onclick="verify()">Verify Fan</button>
+  </div>
+  <div id="badge" class="card">Badge: –</div>
+  <div id="leaderboard" class="card">Leaderboard: loading...</div>
+
+  <script>
+    async function fetchLeaderboard() {
+      const res = await fetch('http://localhost:4000/leaderboard/TaylorSwift');
+      const j = await res.json();
+      document.getElementById('leaderboard').innerHTML = '<strong>Top:</strong> ' + j.top.map(e => e.user + ' (' + e.score + ')').join(', ');
+    }
+    async function verify() {
+      const user = document.getElementById('user').value;
+      const res = await fetch('http://localhost:4000/verify', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          user,
+          platform:'spotify',
+          artist:'TaylorSwift',
+          totalPlays: 3500
+        })
+      });
+      const j = await res.json();
+      if (j.badge) {
+        document.getElementById('badge').innerHTML = `<strong>Badge:</strong> ${j.badge.level} for ${j.badge.artist} (issued ${new Date(j.badge.issuedAt).toLocaleString()})`;
+        fetchLeaderboard();
+      } else {
+        document.getElementById('badge').innerText = 'Verification failed';
+      }
+    }
+    fetchLeaderboard();
+  </script>
+</body>
+</html>
