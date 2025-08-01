@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "dev": "node index.js"
   },
   "dependencies": {
@@ -11,3 +12,4 @@
     "jsonwebtoken": "^9.0.0"
   }
 }
+
